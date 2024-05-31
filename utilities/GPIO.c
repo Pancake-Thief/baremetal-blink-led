@@ -5,6 +5,7 @@
  *      Author: samue
  */
 
+#include <stdio.h>
 #include "GPIO.h"
 #include "bits.h"
 

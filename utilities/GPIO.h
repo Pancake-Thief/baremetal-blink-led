@@ -16,8 +16,8 @@
 
 #define GPIOA_ADDR 0x4002000
 #define GPIO_MODER GPIOA_ADDR
-#define GPIO_OTYPER GPIO_ADDR + 0x04
-#define GPIO_OSPEEDER GPIO_ADDR + 0x08
+#define GPIO_OTYPER GPIOA_ADDR + 0x04
+#define GPIO_OSPEEDR GPIOA_ADDR + 0x08
 #define GPIO_PUPDR GPIOA_ADDR + 0x0C
 
 typedef enum gpio_moder_e {
@@ -66,6 +66,6 @@ typedef struct gpio_config_t{
 /*  @param[in] uint8_t pinNum: Pin number to be configured                                               */
 /*  @param[in] gpio_config_t* gpio_config: The configuration that will be applied to given port and pin  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void configGPIO(uint16_t* gpioX, uint8_t pinNum, gpio_config_t* gpio_config);
+void configGPIO(uint32_t* gpioX, uint8_t pinNum, gpio_config_t* gpio_config);
 
 #endif /* GPIO_H_ */

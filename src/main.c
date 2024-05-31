@@ -7,27 +7,13 @@
 
 //LED is connected to PA5 or PB13 unsure
 // I believe that means its at Port A pin 5 or Port B pin 13
-// Need to set GPIO Moder to Output
-//has 4 32 bit mapped
-// 128 bits controls 16 I/Os each IO gets 8 bits for config
-// 2 bits for MODER
-// 1 bit reserved under OTYPER
-// 1 bit for OTYPER
-// 2 bit for OSPEEDR
-// 2 bits for PUPDR
-
-//GPIOx_IDR read only/input data register
-//GPIOx_IDR output data register read and write
-//For atomic bit set/reset, the ODR bits can be individually set and reset by writing to the GPIOx_BSRR register
-//GPIOx_BSRR bit set/reset register
-
-
+#include <stdint.h>
 #include "GPIO.h"
 
-int main()
+__attribute__((naked, noreturn)) void _reset()
 {
 	//Init section
-	volatile uint32_t* gpioA = GPIOA_ADDR;
+	uint32_t* gpioA = (uint32_t*) GPIOA_ADDR;
 	uint8_t pinNum = 5;
 	gpio_config_t gpioA_config;
 	gpioA_config.moder = OUTPUT;
@@ -37,6 +23,12 @@ int main()
 
 
 	//Maybe make a struct and pass by value?
-	configGPIO(gpioA, pinNum, gpioA_config);
+	configGPIO(gpioA, pinNum, &gpioA_config);
 
 }
+extern void _estack(void);  // Defined in link.ld
+
+// 16 standard and 91 STM32-specific handlers
+__attribute__((section(".vectors"))) void (*const tab[16 + 91])(void) = {
+  _estack, _reset
+};
